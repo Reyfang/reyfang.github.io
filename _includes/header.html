@@ -26,8 +26,7 @@
 
           <nav class="cover-navigation navigation--social">
             <ul class="navigation">
-
-            {% if site.author.weibo_username %}
+              {% if site.author.weibo_username %}
               &lt;!&ndash; weibo &ndash;&gt;
               <li class="navigation__item">
                 <a href="http://weibo.com/{{ site.author.weibo_username }}" title="@{{ site.author.weibo_username }} on Weibo" target="_blank">
@@ -35,7 +34,7 @@
                   <span class="label">Twitter</span>
                 </a>
               </li>
-            {% endif %}
+              {% endif %}
           
             <!--{% if site.author.twitter_username %}
               &lt;!&ndash; Twitter &ndash;&gt;
