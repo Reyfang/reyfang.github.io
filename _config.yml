@@ -1,7 +1,7 @@
 # Site settings
 title: 廿三(23)
 description: '纯粹'
-url: 'http://joshgerdes.com/jekyll-uno'
+url: 'http://blog.artcode.top'
 baseurl: '../../'
 # google_analytics: 'UA-XXXXXX-X'
 # disqus_shortname: 'your-disqus-name'
@@ -11,7 +11,7 @@ author:
   email: rey.real3@gmail.com
   twitter_username: joshgerdes
   facebook_username: joshgerdes
-  github_username:  joshgerdes
+  github_username:  rey.fang
   linkedin_username:  joshgerdes
 
 defaults:
