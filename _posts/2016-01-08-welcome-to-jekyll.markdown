@@ -1,10 +1,10 @@
 ---
-title:  "第一个测试文章!"
-date:   2016-01-08 15:04:23
+title:  "关于使用jekyll在github上搭建博客!"
+date:   2016-10-20 9:55:23
 categories: [23]
 tags: [廿三,2016]
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve --watch`, which launches a web server and auto-regenerates your site when a file is updated.
+其实关于使用jekyll去搭建在github上搭建博客纯属研究技术，结果还挺出乎我的意料的，基本上除了在国内使用时速度太慢其他只是纯写博客的话极力推荐 ^jekyll^ `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve --watch`, which launches a web server and auto-regenerates your site when a file is updated.
 
 To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
 
