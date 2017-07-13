@@ -1,0 +1,204 @@
+---
+title:  "electron开发记录"
+date:   2017-07-19 23:17:23
+categories: [eletron]
+tags: [廿三,2017,electron，electron-builder]
+---
+#  electron开发记录
+
+> 前言：由于公司有HTML项目需要打包成为桌面程序的需求，所以开始研究electron开发，由于最开始选型的时候是准备选择用nw.js来实现，结果各种查资料后最后也就只完成了windows版本的简单实现（主要是个人英语能力太差，中文相关文档比较少，官网看不怎么明白。。。），还没能实现打包成单一exe程序（后来发现了一个打包工具[Enigma Virtual Box](http://enigmaprotector.com/en/aboutvb.html)可以简单完成）,后来发现了electron结果感觉比nw好用，然后就果断换坑，后面有机会再去了解一下nw.js不过新手建议使用electron更比较容易上手一些。以下操作都是基于npm安装以及nodejs相关实现
+
+
+** 未经许可禁止转载 **
+
+## 环境搭建
+
+### 1、首先需要安装 npm 以及 nodejs
+ nodejs 就已经集成了 npm 安装方法：去nodejs官网直接下载安装就好了
+
+ ps：安装好后推荐使用[淘宝镜像](https://npm.taobao.org/)，在国内速度会很快
+
+### 2、安装 electron
+
+在控制台输入：`npm install -g electron`
+
+安装后通过输入 `electron -v` 来判断是否安装成功，如果安装成功会显示当前版本号
+
+ps：目前网上大多教程上的安装命令还是使用的已经停止使用的老命令 `npm install electron-prebulit` 安装时请避免此类错误
+
+### 3、项目结构
+
+在任何地方，建立一个app的目录并新建3个文件：
+
+app/
+
+├── package.json
+
+├── main.js
+
+└── index.html
+
+### 4、配置 package.json 文件
+
+如果接触过 npm 那你一定对 `package.json` 不陌生，网上资料很多这里不细说，只说一些必要的参数配置
+
+```json
+{
+    "name":"youAppName",        //你app的名称 （必填）
+    "version":"1.0.0",          //你App的版本号（必填）
+    "main":"main.js",           //electron 相关开发的程序入口文件（必填）
+    "author":"rey.f",           //作者
+    "description":"描述信息"     //描述信息
+}
+```
+
+### 5、main.js 功能实现
+
+```javascript
+    var electron = require('electron');
+    var app = electron.app;//控制应用生命周期的模块
+    var BorwserWindow = electron.BrowserWindow;//创建原生浏览器窗口的模块
+    var Menu = electron.Menu;//定义菜单模块
+    var shell = electron.shell;
+    var path = require('path');
+    var url = require('url');
+
+    //保持一个对window对象的全局引用，不然当javascript被GC,window 会被自动关闭
+    var mainWindow = null;
+    var version = electron.app.getVersion();//获取当前版本号
+
+    //关于如何自定义菜单相关内容请自行查看官方文档或者其他相关博客，这里不详细展开
+
+    //当所有窗口被关闭了，退出
+    app.on('window-all-closed',function(){
+    	//在 OS X 上，同长用户在明确地按下 Cmd + Q 之前应用会保持活动状态
+    	if(process.platform != 'darwin'){
+    		app.quit();
+    	}
+    });
+
+    //当 Electron 完成了初始化并且准备创建浏览器窗口的时候这个方法被调用
+    app.on('ready',function(){
+
+        //设置图标这里也不详细展开，自行查文档
+
+    	//创建，浏览器窗口，全部参数比较多请自行查询文档
+    	mainWindow = new BorwserWindow({
+    		width:1336, //窗口宽度
+    		height:768,//窗口高度
+    		minWidth:1336,//最小宽度
+    		minHeight:768,//最小高度
+    		maximizable:true,//是否显示最大化按钮
+    		useContentSize:true,
+    		fullscreenable:true,
+    		frame:true,
+    		title:'程序标题',
+    		icon:'程序图标'
+    	});
+
+    	//加载index.html
+    	//注意这里的路径  开发的时候在这里被坑了好久，如果路径有问题的话可能会导致开发的时候运行是没问题的，但是打包后就会出现跨域报错问题
+    	mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'app/index.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+
+
+    	//打开开发工具  正式打包的时候注释掉
+    	// mainWindow.openDevTools();
+
+    	//当window被关闭，这个这个事件被触发
+    	mainWindow.on('closed',function(){
+    		//取消引用 window 对象，如果你的应用支持多窗口的话，通常会把多个 window 对象存在一个数组里，但这次不是
+    		mainWindow = null;
+    	})
+    });
+```
+
+### 6、 编写你的index.html
+
+按照正常方式去写就OK了
+
+ps：如果引入了Jquery 运行的时候报错的话，请尝试这样引入：
+```javascript
+
+<script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
+```
+
+### 7、预览应用
+
+首先在控制台进入你应用所在的文件夹，然后输入 `electron .` 然后回车，就可以跑起来了
+
+### 8、把文件打包成asar二进制文件 （可选项）
+
+1. 全局安装 `asar` : `npm install -g asar`
+> 打包： C:>asar pack 文件夹路径 app.asar  //打包后只读不可修改的
+
+ps:打包后如果要吧asar文件放到项目文件夹中，然后修改main.js中涉及到的引用文件路径
+
+例如：`pathname: path.join(__dirname, 'app.asar/app/index.html'),`
+
+
+### 9、打包
+
+打包可以选择 `electron-package`  和 `electro-builder` 两种我都试过 最后选择了 `electron-builder` 个人感觉使用起来更加方便
+
+1、使用electron-package
+
+首先使用npm安装  `npm install -g electron-package`
+然后使用命令进行相关配置安装
+> electron-packager <location of project> <name of project> <platform> <architecture> <electron version> <optional options>
+
+
+ps:由于发现builder更好用所以没有更加深入的去研究 `electron-package`的使用方法，有兴趣的可以去网上找找，这里推荐一个[博客](http://blog.csdn.net/arvin0/article/details/52690023)
+
+2、使用electron-builder
+
+首先使用npm全局安装 `npm install -g electron-builder`
+
+然后在package.json中添加如下配置，此处只是最简单的配置参数，详细参数可以查官方文档
+
+```json
+"build": {
+  "appId": "you addid", //你的appid
+  "mac": {
+    "icon":"icns.icns" //Mac安装后的图标设置
+  },
+  "win":{
+    "icon":"ico.ico"//windows安装后图标
+  }
+},
+
+```
+
+添加了上述文件后就可以尝试打包了，用终端进入项目路径下，然后输入  `electron-builder  -mwl`  这个是打包Mac 、 windows 、 Linux三个系统下的安装包，如果只需要其中一种的话可以使用下面的命令
+
+1、Mac `electron-builder -m`
+2、Windows `electron-builder -w`
+3、Liunx `electron-builder -l`
+
+ps:如果是第一次打包的话会先下载相关平台的打包支持包，这个真心下载的慢，我这边当初下载的时候一直下载不下来，连续尝试下载了两三天才搞定，后来看到淘宝镜像列表里面有electron的，不知道能不能搞定这个问题，如果后续有下载不下来的情况可以尝试一下
+
+放一个[参考链接](http://blog.csdn.net/gentlycare/article/details/51108292)
+
+
+### 10、相关学习参考链接
+
+https://www.w3cschool.cn/electronmanual/wsmx1qvp.html
+
+http://www.cnblogs.com/chenjinxinlove/p/5881879.html
+
+https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/menu.md
+
+http://www.tuicool.com/articles/imueaqV
+
+http://blog.csdn.net/arvin0/article/details/52690023
+
+https://github.com/electron-userland/electron-builder
+
+https://segmentfault.com/a/1190000005744529
+
+**打完收工**
+
+`2017-07-13 by Rey.f`
