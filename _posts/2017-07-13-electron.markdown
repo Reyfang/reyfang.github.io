@@ -4,7 +4,7 @@ date:   2017-07-19 23:17:23
 categories: [eletron]
 tags: [廿三,2017,electron，electron-builder]
 ---
-#  electron开发记录
+
 
 > 前言：由于公司有HTML项目需要打包成为桌面程序的需求，所以开始研究electron开发，由于最开始选型的时候是准备选择用nw.js来实现，结果各种查资料后最后也就只完成了windows版本的简单实现（主要是个人英语能力太差，中文相关文档比较少，官网看不怎么明白。。。），还没能实现打包成单一exe程序（后来发现了一个打包工具[Enigma Virtual Box](http://enigmaprotector.com/en/aboutvb.html)可以简单完成）,后来发现了electron结果感觉比nw好用，然后就果断换坑，后面有机会再去了解一下nw.js不过新手建议使用electron更比较容易上手一些。以下操作都是基于npm安装以及nodejs相关实现
 
@@ -148,7 +148,8 @@ ps:打包后如果要吧asar文件放到项目文件夹中，然后修改main.js
 
 首先使用npm安装  `npm install -g electron-package`
 然后使用命令进行相关配置安装
-> electron-packager <location of project> <name of project> <platform> <architecture> <electron version> <optional options>
+> electron-packager
+> \<location of project\> \<name of project\> \<platform\> \<architecture\> \<electron version\> \<optional options\>
 
 
 ps:由于发现builder更好用所以没有更加深入的去研究 `electron-package`的使用方法，有兴趣的可以去网上找找，这里推荐一个[博客](http://blog.csdn.net/arvin0/article/details/52690023)
@@ -185,19 +186,19 @@ ps:如果是第一次打包的话会先下载相关平台的打包支持包，�
 
 ### 10、相关学习参考链接
 
-https://www.w3cschool.cn/electronmanual/wsmx1qvp.html
+[https://www.w3cschool.cn/electronmanual/wsmx1qvp.html](https://www.w3cschool.cn/electronmanual/wsmx1qvp.html)
 
-http://www.cnblogs.com/chenjinxinlove/p/5881879.html
+[http://www.cnblogs.com/chenjinxinlove/p/5881879.html](http://www.cnblogs.com/chenjinxinlove/p/5881879.html)
 
-https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/menu.md
+[https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/menu.md](https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/menu.md)
 
-http://www.tuicool.com/articles/imueaqV
+[http://www.tuicool.com/articles/imueaqV](http://www.tuicool.com/articles/imueaqV)
 
-http://blog.csdn.net/arvin0/article/details/52690023
+[http://blog.csdn.net/arvin0/article/details/52690023](http://blog.csdn.net/arvin0/article/details/52690023)
 
-https://github.com/electron-userland/electron-builder
+[https://github.com/electron-userland/electron-builder](https://github.com/electron-userland/electron-builder)
 
-https://segmentfault.com/a/1190000005744529
+[https://segmentfault.com/a/1190000005744529](https://segmentfault.com/a/1190000005744529)
 
 **打完收工**
 
